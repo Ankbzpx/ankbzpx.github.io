@@ -3,6 +3,7 @@ sidebar_position: 2
 ---
 
 import FlowlineGroup from "@site/src/components/FlowlineGroup";
+import ToyViewer from "@site/src/components/ToyViewer";
 
 # Neural Implicit Octahedral Field (WIP)
 
@@ -19,6 +20,8 @@ To this end, I use a coordinate-base MLP to predict the SH parameterization of o
 > \* with $(p=2, \epsilon=0)$
 
 When training jointly with neural SDF field, it also serves a natural guidance for enforcing sharp feature of implicit geometry, thanks to its octahedral symmetry $\pi= f(x)$.
+
+<ToyViewer />
 
 One intriguing property of the implicit octahedral field, is the fact that it is fully defined in the ambient space.
 
