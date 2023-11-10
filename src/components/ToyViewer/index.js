@@ -90,6 +90,7 @@ export default function ToyViewer() {
         </Canvas>
         <br/>
       </div>
+      <br/><br/>
     </div>
   );
 }

@@ -5,15 +5,6 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 
-const options = [
-    { value: 'bunny', label: 'Bunny' },
-    { value: 'cube_twist', label: 'CubeTwist' },
-    { value: 'cylinder', label: 'Cylinder' },
-    { value: 'fandisk', label: 'Fandisk' },
-    { value: 'join', label: 'Join' },
-    { value: 'rocker_arm', label: 'RockerArm' },
-];
-
 export default function FlowlineGroup() {
     const [model, setModel] = React.useState('bunny');
 
