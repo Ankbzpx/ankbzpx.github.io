@@ -5,6 +5,6 @@ sidebar_position: 1
 
 # Intro
 
-Here is the project page of my homepage. 
+This is the project page of my homepage. 
 
-> Right now it is the only page because the others are still WIP...
+> Also the only page at current moment. The rests are under construction...

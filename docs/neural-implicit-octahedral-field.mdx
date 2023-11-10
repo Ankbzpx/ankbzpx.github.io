@@ -5,31 +5,71 @@ sidebar_position: 2
 import FlowlineGroup from "@site/src/components/FlowlineGroup";
 import ToyViewer from "@site/src/components/ToyViewer";
 import RegViewer from "@site/src/components/RegViewer";
+import SingularityViewer from "@site/src/components/SingularityViewer";
+
 
 # Neural Implicit Octahedral Field (WIP)
 
-Ever since the badge generation project, I have been fascinated by the process of 3D mesh modeling--the artistry of duplicating and offsetting mesh edge loops. Its enabled concise and meticulous control are hard to replicate for other geometry representation, i.e. the implicit one preferred by state of the art 3D generative methods. Aggravatingly, such editing requires quad dominant mesh of feature aligned edge loops--the property that mesh extracted from volume data does not possess.
+## Motivation
 
-To bridge the gap, the obvious choice is to extract mesh first (i.e. using Marching Cube (MC) and its derivatives), then apply quadrilateral remeshing. This is also where I started. After the whole week of scrutinizing the source code of [Instant meshes](https://github.com/wjakob/instant-meshes), one of the most accessible implementation in public, I was amazed by how elegant it is--The 2D cross field utilized to guide quad tessellation, it computed with pure local smoothing (in fact it is also randomly initialized), while being smooth enough in 3D ambient space, it automatically aligns with sharp features. 
+Ever since the badge generation project, I have been fascinated by the process of 3D mesh modeling--the artistry of duplicating and offsetting mesh edge loops. It allows concise and meticulous control, which are hard to replicate for other geometry representation, i.e. the implicit one preferred by state of the art 3D generative methods. However, such editing doesn't come cheap--it requires quad dominant mesh with feature aligned edge loops, the property that mesh extracted from volume data does not possess.
 
-The local smooth only property immediately strikes me as a prefect candidate for neural implicit representation. However, the cross field is defined on 2-manifold, as opposed to euclidean space the most MLP output lies. Also, measuring their pairwise smoothness requires exhaustive matching between representation vectors, which is hard to integrate implicitly.
+To bridge the gap, the obvious choice is to extract mesh first (i.e. using Marching Cube (MC) or its derivatives), then apply quadrilateral remeshing. This is also where I started. After the whole week of scrutinizing the source code of [Instant meshes](https://github.com/wjakob/instant-meshes), one of the most accessible implementation available in public, I was amazed by how elegant it is--The 2D cross field utilized for guiding quad tessellation is computed completely with local smoothing (in fact it is also randomly initialized). When the cross field is smooth enough in 3D ambient space, it automatically aligns with sharp features.
 
-Fortunately, the 3D generalization of cross field, the octahedral field, paves both obstacles. Being 3D, the octahedral field is naturally defined in euclidean ambient space, in which its smoothness can be measured matching-free, by leveraging its Spherical Harmonics (SH) parameterized functional representation. Most prominently, smooth octahedral field in SH parameterization space inherents the same feature aligned property from its 2D counterpart.
+The local smooth immediately strikes me as a prefect candidate for neural implicit representation--MLP favours smooth prior. However, the cross field is defined on 2-manifold, as opposed to euclidean space that most MLP output lies. Also, measuring pairwise smoothness for cross frames requires exhaustive matching between representation vectors, which is hard to accomplish implicitly.
 
-To this end, I use a coordinate-base MLP to predict the SH parameterization of octahedral field, by supervising normal alignment with surface samples, while regularizing it to be locally as smooth as possible in the ambient space. It successfully encodes volume octahedral field implicitly, that when evaluated on surface, gives similar flowlines as the ones solved using global system, as shown below:
+Fortunately, the 3D generalization of cross field, the octahedral field, paves both obstacles. Being 3D, the octahedral field naturally defines in euclidean ambient space, in which its smoothness can be measured matching-free, by leveraging its Spherical Harmonics (SH) parameterized functional representation. Most prominently, smooth octahedral field in SH parameterization space inherits the same feature aligned property as its 2D counterpart, making it the prefect implicit representation.
 
-{/* <FlowlineGroup /> */}
+## Implementation
+In brief, given uniformly sampled oriented pointcloud as input, we use two MLPs to fit both SDF (use [Siren](https://github.com/vsitzmann/siren)) and octahedral SH coefficients (use [LipMLP](https://nv-tlabs.github.io/lip-mlp/)). For SDF, we follow official code, while for octahedral field, we supervise it to align with pointcloud orientation while being locally as smooth as possible elsewhere. LipMLP enables an efficient way of enforcing smoothness, as opposed to sampling and minimizing gradient F-norm, which increases the training speed by 50%. Please refers to the publication and code for details (link will be add after release).
+
+## Key results
+> **Note** For rendering efficiency, I apply quadratic edge collapsing provided by [MeshLab](https://www.meshlab.net) to MC output. It reduce face count to around 20000 (or 60000 for ones with artifacts) while preserving the original appear
+
+### Direct cross field evaluation
+Our octahedral MLP encodes volume octahedral field implicitly, that when evaluated on surface using vertex query, gives similar flowlines as ones solved using global system
+
+        {/* <FlowlineGroup /> */}
 
 > \* with $(p=2, \epsilon=0)$
 
-When training jointly with neural SDF field, it also serves a natural guidance for enforcing sharp feature of implicit geometry, thanks to its octahedral symmetry $\pi= f(x)$
+Thus, its immediate application is to save the cross field generation step of quadrilateral remeshing.
 
-{/* <ToyViewer /> */}
+### Octahedral prior for surface regularization
+During joint training with SDF field, we realize the octahedral field serves a natural guidance of enforcing sharp feature for implicit geometry, thanks to its octahedral symmetry of $\pi / 2$
 
-<RegViewer />
+Here is the toy example. Upon interpolation, octahedral frame encourages shaper angle (conformal to $\pi / 2$ at infinitesimal), while converges to $\pi$ under smoothed settings
 
-> For rendering efficiency, I apply quadratic edge collapsing provided by [MeshLab](https://www.meshlab.net) to MC output. It reduce face count to around 20000 while preserving the original appear
+        {/* <ToyViewer /> */}
 
+As such, regularization works well for geometry of sharp edges. In following example, we surpass baseline in terms of cleaner and sharper features, with only $1/4$ of input samples
+
+        {/* <RegViewer /> */}
+
+### Neural inverse volume parameterization
 One intriguing property of the implicit octahedral field, is the fact that it is fully defined in the ambient space.
 
-By cross reference related work and code implementation
+<SingularityViewer />
+
+#### Bonus
+This my attempt to solve continuous seamless volume parameterization. It's... crappy to say the least, but a pretty fun experience!
+
+## Acknowledgement
+Our work is mostly inspired by the following work (unordered)
+- [Instant Field-Aligned Meshes](https://igl.ethz.ch/projects/instant-meshes/) by Jakob et al.
+- [Extrinsically Smooth Direction Fields](https://adshhzy.github.io/projectfolder/ESDF/extrinsic.pdf) by Huang et al.
+- [Practical 3D frame field generation](https://dl.acm.org/doi/pdf/10.1145/2980179.2982408) by Ray et al.
+- [Algebraic Representations for Volumetric Frame Fields](https://boris.unibe.ch/143298/1/3366786.pdf) by Palmer et al.
+- [Octahedral Frames for Feature-Aligned Cross Fields](https://people.csail.mit.edu/jsolomon/assets/crossfields.pdf) by Zhang et al.
+- [Designing 2D and 3D Non-Orthogonal Frame Fields](https://inria.hal.science/hal-03287233/file/ff_nonortho.pdf) by Desobry et al.
+- [Learning Smooth Neural Functions via Lipschitz Regularization](https://nv-tlabs.github.io/lip-mlp/) by Liu et al.
+
+Our development and implementation relies heavily on following packages / softwares (unordered)
+- [JAX](https://github.com/google/jax)
+- [JAXopt](https://github.com/google/jaxopt)
+- [Equinox](https://github.com/patrick-kidger/equinox)
+- [Polyscope](https://polyscope.run)
+- [Libigl](https://github.com/libigl/libigl)
+- Code of [Instant Field-Aligned Meshes](https://github.com/wjakob/instant-meshes)
+- Code of [Extrinsically Smooth Direction Fields](https://github.com/adshhzy/SMI2016_Extrinsic)
+- Code of [Algebraic Representations for Volumetric Frame Fields](https://github.com/dpa1mer/arff)
