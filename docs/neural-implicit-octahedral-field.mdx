@@ -7,6 +7,7 @@ import ToyViewer from "@site/src/components/ToyViewer";
 import RegViewer from "@site/src/components/RegViewer";
 import SingularityViewer from "@site/src/components/SingularityViewer";
 import InverseParamViewer from "@site/src/components/InverseParamViewer";
+import ParamViewer from "@site/src/components/ParamViewer";
 
 
 # Neural Implicit Octahedral Field (WIP)
@@ -57,12 +58,15 @@ $$
 $$
 where $f: V_{param} \to V_{\mathbb{R}^3}$
 
-<InverseParamViewer name='cube_twist' />
+        {/* <InverseParamViewer name='cube_twist' /> */}
 
-<InverseParamViewer name='fandisk_rot' />
+        {/* <InverseParamViewer name='fandisk_rot' target={[0, 0.05, -0.1]} /> */}
 
 #### Bonus
-This my attempt to solve continuous seamless volume parameterization. It's... crappy to say the least, but a pretty fun experience!
+This is my attempt to solve continuous seamless volume parameterization
+
+<ParamViewer />
+
 
 ## Acknowledgement
 Our work is mostly inspired by the following work (unordered)

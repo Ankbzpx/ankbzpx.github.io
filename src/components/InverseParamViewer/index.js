@@ -38,7 +38,7 @@ function Model({ modelPath, color, wireframeColor, wireframe }) {
     return <primitive ref={modelRef} object={copiedModel} />;
 }
 
-export default function InverseParamViewer({ name }) {
+export default function InverseParamViewer({ name, target }) {
     const [enableWireframe, setEnableWireframe] = React.useState(false);
 
     return (
@@ -49,8 +49,8 @@ export default function InverseParamViewer({ name }) {
                     <div style={{ height: "50vh" }}>
                         <Canvas camera={{ position: [0, 1.5, 3], fov: 55 }}>
                             <Environment preset='dawn' />
-                            <OrbitControls dampingFactor={0.1} />
-                            <Model modelPath={`/mesh/param/${name}_inv_param_mc.obj`} color='#FF9A2D' wireframeColor='#884700' wireframe={enableWireframe} />
+                            <OrbitControls dampingFactor={0.1} target={target} />
+                            <Model modelPath={`/mesh/inv_param/${name}_inv_param_mc.obj`} color='#FF9A2D' wireframeColor='#884700' wireframe={enableWireframe} />
                         </Canvas>
                         <p style={{ textAlign: 'center' }}>Inverse param</p>
                     </div>
@@ -59,14 +59,14 @@ export default function InverseParamViewer({ name }) {
                     <div style={{ height: "50vh" }}>
                         <Canvas camera={{ position: [0, 1.5, 3], fov: 55 }}>
                             <Environment preset='dawn' />
-                            <OrbitControls dampingFactor={0.1} />
-                            <Model modelPath={`/mesh/param/${name}_mc.obj`} color='#2DC9FF' wireframeColor='#00526F' wireframe={enableWireframe} />
+                            <OrbitControls dampingFactor={0.1} target={target} />
+                            <Model modelPath={`/mesh/inv_param/${name}_mc.obj`} color='#2DC9FF' wireframeColor='#00526F' wireframe={enableWireframe} />
                         </Canvas>
                         <p style={{ textAlign: 'center' }} >Ambient</p>
                     </div>
                 </div>
             </div>
-            <br/><br/>
+            <br /><br />
         </div>
 
     );
