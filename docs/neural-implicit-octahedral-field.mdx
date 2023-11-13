@@ -6,13 +6,14 @@ import FlowlineGroup from "@site/src/components/FlowlineGroup";
 import ToyViewer from "@site/src/components/ToyViewer";
 import RegViewer from "@site/src/components/RegViewer";
 import SingularityViewer from "@site/src/components/SingularityViewer";
+import InverseParamViewer from "@site/src/components/InverseParamViewer";
 
 
 # Neural Implicit Octahedral Field (WIP)
 
 ## Motivation
 
-Ever since the badge generation project, I have been fascinated by the process of 3D mesh modeling--the artistry of duplicating and offsetting mesh edge loops. It allows concise and meticulous control, which are hard to replicate for other geometry representation, i.e. the implicit one preferred by state of the art 3D generative methods. However, such editing doesn't come cheap--it requires quad dominant mesh with feature aligned edge loops, the property that mesh extracted from volume data does not possess.
+Ever since the badge generation project, I have been fascinated by the process of 3D mesh modeling--the artistry of duplicating and offsetting mesh edge loops. It allows concise and meticulous control, which is hard to replicate with other geometry representation, i.e. the implicit one preferred by state of the art 3D generative methods. However, such editing doesn't come cheap--it requires quad dominant mesh with feature aligned edge loops, the property that mesh extracted from volume data does not possess.
 
 To bridge the gap, the obvious choice is to extract mesh first (i.e. using Marching Cube (MC) or its derivatives), then apply quadrilateral remeshing. This is also where I started. After the whole week of scrutinizing the source code of [Instant meshes](https://github.com/wjakob/instant-meshes), one of the most accessible implementation available in public, I was amazed by how elegant it is--The 2D cross field utilized for guiding quad tessellation is computed completely with local smoothing (in fact it is also randomly initialized). When the cross field is smooth enough in 3D ambient space, it automatically aligns with sharp features.
 
@@ -33,7 +34,7 @@ Our octahedral MLP encodes volume octahedral field implicitly, that when evaluat
 
 > \* with $(p=2, \epsilon=0)$
 
-Thus, its immediate application is to save the cross field generation step of quadrilateral remeshing.
+Thus, the immediate application is to save the cross guiding field generation step of quadrilateral remeshing.
 
 ### Octahedral prior for surface regularization
 During joint training with SDF field, we realize the octahedral field serves a natural guidance of enforcing sharp feature for implicit geometry, thanks to its octahedral symmetry of $\pi / 2$
@@ -49,7 +50,16 @@ As such, regularization works well for geometry of sharp edges. In following exa
 ### Neural inverse volume parameterization
 One intriguing property of the implicit octahedral field, is the fact that it is fully defined in the ambient space.
 
-<SingularityViewer />
+        {/* <SingularityViewer /> */}
+
+$$
+\int_{V_{param}} \| (\nabla f)^T - X \circ f \|_F^2 \ d{V_{param}}
+$$
+where $f: V_{param} \to V_{\mathbb{R}^3}$
+
+<InverseParamViewer name='cube_twist' />
+
+<InverseParamViewer name='fandisk_rot' />
 
 #### Bonus
 This my attempt to solve continuous seamless volume parameterization. It's... crappy to say the least, but a pretty fun experience!
