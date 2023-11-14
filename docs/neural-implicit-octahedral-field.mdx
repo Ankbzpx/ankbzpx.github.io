@@ -8,6 +8,8 @@ import RegViewer from "@site/src/components/RegViewer";
 import SingularityViewer from "@site/src/components/SingularityViewer";
 import InverseParamViewer from "@site/src/components/InverseParamViewer";
 import ParamViewer from "@site/src/components/ParamViewer";
+import OctInterp from '/img/oct_interp.svg'
+import NormalInterp from '/img/normal_interp.svg'
 
 
 # Neural Implicit Octahedral Field (WIP)
@@ -39,6 +41,22 @@ Thus, the immediate application is to save the cross guiding field generation st
 
 ### Octahedral prior for surface regularization
 During joint training with SDF field, we realize the octahedral field serves a natural guidance of enforcing sharp feature for implicit geometry, thanks to its octahedral symmetry of $\pi / 2$
+
+<div style={{width: '400px', margin: "0 auto"}}>
+    <div class="container">
+        <div class="row">
+        <div class="col">
+        <NormalInterp />
+        <p style={{ textAlign: 'center' }}>Smoothed normal interpolation</p>
+        </div>
+        <div class="col">
+        <OctInterp />
+        <p style={{ textAlign: 'center' }}>Smoothed octahedral interpolation</p>
+        </div>
+    </div>
+    </div>
+</div>
+
 
 Here is the toy example. Upon interpolation, octahedral frame encourages shaper angle (conformal to $\pi / 2$ at infinitesimal), while converges to $\pi$ under smoothed settings
 
