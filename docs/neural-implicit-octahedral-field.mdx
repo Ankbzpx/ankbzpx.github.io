@@ -14,7 +14,7 @@ import ParamViewer from "@site/src/components/ParamViewer";
 
 ## Motivation
 
-Ever since the badge generation project, I have been fascinated by the process of 3D mesh modeling--the artistry of duplicating and offsetting mesh edge loops. It allows concise and meticulous control, which is hard to replicate with other geometry representation, i.e. the implicit one preferred by state of the art 3D generative methods. However, such editing doesn't come cheap--it requires quad dominant mesh with feature aligned edge loops, the property that mesh extracted from volume data does not possess.
+Ever since the badge generation project, I have been fascinated by mesh edge loops manipulation. It allows concise and meticulous control, which is hard to replicate for other geometry Representations, i.e. the implicit one preferred by state of the art 3D generative methods. However, such editing doesn't come cheap--it requires quad dominant mesh with feature aligned edge loops, the property that mesh extracted from volume data does not possess.
 
 To bridge the gap, the obvious choice is to extract mesh first (i.e. using Marching Cube (MC) or its derivatives), then apply quadrilateral remeshing. This is also where I started. After the whole week of scrutinizing the source code of [Instant meshes](https://github.com/wjakob/instant-meshes), one of the most accessible implementation available in public, I was amazed by how elegant it is--The 2D cross field utilized for guiding quad tessellation is computed completely with local smoothing (in fact it is also randomly initialized). When the cross field is smooth enough in 3D ambient space, it automatically aligns with sharp features.
 
@@ -31,7 +31,7 @@ In brief, given uniformly sampled oriented pointcloud as input, we use two MLPs 
 ### Direct cross field evaluation
 Our octahedral MLP encodes volume octahedral field implicitly, that when evaluated on surface using vertex query, gives similar flowlines as ones solved using global system
 
-        {/* <FlowlineGroup /> */}
+<FlowlineGroup />
 
 > \* with $(p=2, \epsilon=0)$
 
@@ -42,25 +42,25 @@ During joint training with SDF field, we realize the octahedral field serves a n
 
 Here is the toy example. Upon interpolation, octahedral frame encourages shaper angle (conformal to $\pi / 2$ at infinitesimal), while converges to $\pi$ under smoothed settings
 
-        {/* <ToyViewer /> */}
+<ToyViewer />
 
 As such, regularization works well for geometry of sharp edges. In following example, we surpass baseline in terms of cleaner and sharper features, with only $1/4$ of input samples
 
-        {/* <RegViewer /> */}
+<RegViewer />
 
 ### Neural inverse volume parameterization
 One intriguing property of the implicit octahedral field, is the fact that it is fully defined in the ambient space.
 
-        {/* <SingularityViewer /> */}
+<SingularityViewer />
 
 $$
 \int_{V_{param}} \| (\nabla f)^T - X \circ f \|_F^2 \ d{V_{param}}
 $$
-where $f: V_{param} \to V_{\mathbb{R}^3}$
+where $f: V_{param} \to V \in \mathbb{R}^3$
 
-        {/* <InverseParamViewer name='cube_twist' /> */}
+<InverseParamViewer name='cube_twist' />
 
-        {/* <InverseParamViewer name='fandisk_rot' target={[0, 0.05, -0.1]} /> */}
+<InverseParamViewer name='fandisk_rot' target={[0, 0.05, -0.1]} />
 
 #### Bonus
 This is my attempt to solve continuous seamless volume parameterization

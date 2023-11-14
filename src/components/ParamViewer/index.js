@@ -157,6 +157,7 @@ export default function ParamViewer() {
 
                         </Canvas>
                     </div>
+                    <p style={{ textAlign: 'center' }} >Octahedral field</p>
                     <FormControlLabel control={<Switch defaultChecked value={comb} onChange={() => { setComb(!comb) }} />} label="Comb" />
                     <FormGroup>
                         <FormControlLabel control={<Checkbox defaultChecked value={enableX} onChange={() => { setEnableX(!enableX) }} sx={{
@@ -181,7 +182,6 @@ export default function ParamViewer() {
 
                 </div>
                 <div class="col col--4">
-
                     <div style={{ height: "50vh" }}>
                         <Canvas camera={{ position: [0, 1.5, 3], fov: 55 }}>
                             <ambientLight intensity={Math.PI / 2} />
@@ -200,17 +200,19 @@ export default function ParamViewer() {
                             }
                         </Canvas>
                     </div>
+                    <p style={{ textAlign: 'center' }} >Seam</p>
                     <FormControlLabel control={<Switch defaultChecked value={cutFix} onChange={() => { setCutFix(!cutFix) }} />} label="Cut fix" />
                 </div>
                 <div class="col col--4">
                     <div style={{ height: "50vh" }}>
                         <Canvas camera={{ fov: 55 }}>
                             <Environment preset='dawn' />
-                            <OrbitControls dampingFactor={0.1} target-y={1.25} />
+                            <OrbitControls dampingFactor={0.1} target-y={1.2} />
                             <ModelPBR modelPath={`/mesh/param/params.obj`} color={showGrad ? '#696969': '#FFD43F'} opacity={showGrad ? 0.1 : 1.0} />
                             {showGrad && <Frame name='param_grad' enableX={enableX} enableY={enableY} enableZ={enableZ} />}
                         </Canvas>
                     </div>
+                    <p style={{ textAlign: 'center' }} >Parameterization</p>
                     <FormControlLabel control={<Checkbox value={showGrad} onChange={() => { setShowGrad(!showGrad) }} />} label="Show gradient" />
                 </div>
             </div>

@@ -52,7 +52,7 @@ export default function InverseParamViewer({ name, target }) {
                             <OrbitControls dampingFactor={0.1} target={target} />
                             <Model modelPath={`/mesh/inv_param/${name}_inv_param_mc.obj`} color='#FF9A2D' wireframeColor='#884700' wireframe={enableWireframe} />
                         </Canvas>
-                        <p style={{ textAlign: 'center' }}>Inverse param</p>
+                        <p style={{ textAlign: 'center' }}>MC in parameterization space</p>
                     </div>
                 </div>
                 <div class="col col--6">
@@ -62,7 +62,7 @@ export default function InverseParamViewer({ name, target }) {
                             <OrbitControls dampingFactor={0.1} target={target} />
                             <Model modelPath={`/mesh/inv_param/${name}_mc.obj`} color='#2DC9FF' wireframeColor='#00526F' wireframe={enableWireframe} />
                         </Canvas>
-                        <p style={{ textAlign: 'center' }} >Ambient</p>
+                        <p style={{ textAlign: 'center' }} >MC in ambient space</p>
                     </div>
                 </div>
             </div>
