@@ -17,14 +17,12 @@ const Model = () => {
 
 export default function BadgeTeaser() {
     return (
-        <div style={{ height: "50vh" }}>
-            <Canvas camera={{ position: [0, 1.5, 3], fov: 55 }}>
+        <Canvas camera={{ position: [0, 1.5, 3], fov: 55 }}>
                 <Suspense fallback={null}>
                     <Model />
                     <OrbitControls dampingFactor={0.1} />
                     <Environment preset="sunset" />
                 </Suspense>
             </Canvas>
-        </div>
     )
 }
