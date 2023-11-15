@@ -61,7 +61,7 @@ export default function SingularityViewer() {
                     <MenuItem value={'rocker_arm'}>RockerArm</MenuItem>
                 </Select>
             </FormControl>
-            <div style={{ height: "50vh" }}>
+            <div style={{ height: "35vh" }}>
                 <Canvas camera={{ position: [0, 1.5, 3], fov: 55 }}>
                     <ambientLight intensity={Math.PI / 2} />
                     <OrbitControls dampingFactor={0.1} />

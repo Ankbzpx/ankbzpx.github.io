@@ -47,7 +47,7 @@ export default function InverseParamViewer({ name, target }) {
             <div class="row">
                 <div class="col col--6">
                     <div style={{ height: "50vh" }}>
-                        <Canvas camera={{ position: [0, 1.5, 3], fov: 55 }}>
+                        <Canvas camera={{ position: [-2, 1.5, -1], fov: 55 }}>
                             <Environment preset='dawn' />
                             <OrbitControls dampingFactor={0.1} target={target} />
                             <Model modelPath={`/mesh/inv_param/${name}_inv_param_mc.obj`} color='#FF9A2D' wireframeColor='#884700' wireframe={enableWireframe} />
@@ -57,12 +57,12 @@ export default function InverseParamViewer({ name, target }) {
                 </div>
                 <div class="col col--6">
                     <div style={{ height: "50vh" }}>
-                        <Canvas camera={{ position: [0, 1.5, 3], fov: 55 }}>
+                        <Canvas camera={{ position: [-2, 1.5, -1], fov: 55 }}>
                             <Environment preset='dawn' />
                             <OrbitControls dampingFactor={0.1} target={target} />
                             <Model modelPath={`/mesh/inv_param/${name}_mc.obj`} color='#2DC9FF' wireframeColor='#00526F' wireframe={enableWireframe} />
                         </Canvas>
-                        <p style={{ textAlign: 'center' }} >MC in ambient space</p>
+                        <p style={{ textAlign: 'center' }} >MC in original space</p>
                     </div>
                 </div>
             </div>

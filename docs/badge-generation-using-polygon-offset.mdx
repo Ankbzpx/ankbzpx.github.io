@@ -24,7 +24,7 @@ This is a mesh generation projection I have worked on in industry. The goal is s
   <p style={{ textAlign: 'center' }}>Pipeline using my fan art of [Britz](https://forlittletail.fandom.com/wiki/Britz_Strudel) as cover image</p>
 </div>
 
- Under initial assessment, the edge can be customized with a curve editor, and the generation is a perfect use case for Blender [bevel modifier](https://en.wikibooks.org/wiki/Blender_3D:_Noob_to_Pro/Bevelling_a_Curve). However, the latter introduces self-intersection that are non-trivial to resolve--the only solution I found is to tetrahedralize everything and filter using [generalized winding number](https://igl.ethz.ch/projects/winding-number/), but my attempt failed due to the crash of [TetGen](https://wias-berlin.de/software/index.jsp?id=TetGen&lang=1).
+ Under initial assessment, the edge can be customized with a curve editor, and the generation is a perfect use case for Blender [bevel modifier](https://en.wikibooks.org/wiki/Blender_3D:_Noob_to_Pro/Bevelling_a_Curve). However, the latter introduces self-intersection that are non-trivial to resolve--the only solution I found is to tetrahedralize everything then filter using [generalized winding number](https://igl.ethz.ch/projects/winding-number/), but my attempt failed due to the crash of [TetGen](https://wias-berlin.de/software/index.jsp?id=TetGen&lang=1).
 
 <div class="container" >
   <div class="row row--no-gutters">
@@ -130,4 +130,4 @@ Though not occur in this cover image, it can handle topology change, as demonstr
 
 With polygons successfully tessellated, I use Blender to perform the rest (remove duplicated vertices, assign UV, texture)
 
-**Afterthoughts** Though the proposed polygon offset method is robust, reasonably fast (around 3 seconds) and can produce meaningful edge loops, it regrettably gives triangle mesh that cannot completely fulfill the artists' needs. Nevertheless, it is the project that brought me in and captivated me in geometry processing.
+**Afterthoughts** Though the proposed method is robust, reasonably fast (around 3 seconds) and can produce meaningful edge loops, it regrettably gives triangle mesh that cannot completely fulfill the artists' needs. Nevertheless, it is the project that brought me in and captivated me in geometry processing.

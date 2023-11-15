@@ -27,7 +27,7 @@ function Model({ modelPath, color }) {
 }
 
 export default function ToyViewer() {
-  const [creaseAngle, setCreaseAngle] = React.useState(30);
+  const [creaseAngle, setCreaseAngle] = React.useState(60);
   const [enableInput, setEnableInput] = React.useState(true);
   const [enableOct, setEnableOct] = React.useState(true);
   const [enableReg, setEnableReg] = React.useState(true);
@@ -79,7 +79,7 @@ export default function ToyViewer() {
         }} />} label="Surface no regularization" />
       </FormGroup>
       <div style={{ height: "50vh" }}>
-        <Canvas camera={{ position: [0, 0.5, 1], fov: 55 }}>
+        <Canvas camera={{ position: [0, 0.5, 2], fov: 55 }}>
           <OrbitControls dampingFactor={0.12} rotateSpeed={0.5}/>
           <ambientLight intensity={Math.PI / 2} />
           <pointLight position={[10, 10, 10]} decay={0} intensity={Math.PI} />
