@@ -12,7 +12,7 @@ import rehypeKatex from 'rehype-katex';
 const config = {
   title: 'Ruichen Zheng',
   tagline: 'Ruichen Zheng\'s hideout',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/ank.svg',
 
   // Set the production url of your site here
   url: 'https://your-docusaurus-site.example.com',
@@ -74,7 +74,7 @@ const config = {
         title: 'Ruichen Zheng',
         logo: {
           alt: 'My Site Logo',
-          src: 'img/logo.svg',
+          src: 'img/ank.svg',
         },
         items: [
           {
