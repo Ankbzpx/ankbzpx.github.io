@@ -20,16 +20,16 @@ import NormalInterp from '/img/normal_interp.svg'
 
 ## Motivation
 
-Ever since the badge generation project, I have been fascinated by the quad mesh modeling. The edge loop centered operators, such as loop insertion and loop slide, enable concise and fine grained control, which are hard to extend for other geometry representations (i.e. the implicit one). However, such benefit doesn't come cheap--the mesh not only needs to be quad dominant, its edge loops also are required to align precisely with geometric features, of which the mesh extracted (i.e. using Marching Cube (MC) or its derivatives) from volume data does not possess.
+Ever since the badge generation project, I have been fascinated by the quad mesh modeling. The edge loop centered operators, such as loop insertion and loop slide, enable concise and fine-grained control, which are hard to replicate with other geometry representations (i.e. the implicit one). However, such benefit doesn't come cheap--the mesh not only needs to be quad dominant, its edge loops are also required to align precisely with geometric features, the property that mesh extracted (i.e. using Marching Cube (MC) or its derivatives) from volume data does not possess.
 
-To bridge the gap, I started with the most obvious solution-- extract first then apply quadrilateral remeshing. After scrutinizing the source code of [Instant meshes](https://github.com/wjakob/instant-meshes), one of the most accessible implementations available in public, I was stunned by how elegant it is. Similar to prior work, a smooth 2D cross field is applied to guide quad tessellation. However, instead of relying on manually specified cross frames, its feature alignment depends purely on smoothing--the cross field automatically snaps to sharp features under sufficient smoothness in 3D ambient space. The initial field is in fact even randomized.
+To bridge the gap, I started with the common practice--extract mesh first then apply quadrilateral remeshing. After scrutinizing the source code of [Instant meshes](https://github.com/wjakob/instant-meshes), one of the most accessible implementations available in public, I was stunned by how elegant it is. Similar to prior work, it use a smooth 2D cross field to guide quad tessellation. However, instead of relying on manually specified cross frames, the feature alignment is purely enforced with smoothing--the cross field automatically snaps to sharp features under sufficient smoothness in 3D ambient space. In fact, the initial field is even randomized.
 
-The local smoothness immediately strikes me as a prefect candidate for neural implicit representation, as MLP naturally possess smooth prior. However, the cross field is defined on 2-manifold, and measuring its smoothness requires exhaustive pairwise representation vector matching, which is hard to integrate implicitly. Fortunately, its 3D generalization, the octahedral field, paves both obstacles. Being 3D, the octahedral field naturally defines in euclidean space, where its smoothness can be measured in matching-free fashion, thanks to its Spherical Harmonics (SH) parameterized functional representation. Most prominently, smooth octahedral field in SH parameterization space inherits the same sharp feature alignment property as its 2D counterpart, making it the idea representation.
+The local smoothness immediately strikes me as a prefect candidate for neural implicit representation, as MLP naturally has smooth prior. However, the cross field is defined on 2-manifold, and measuring its smoothness requires exhaustive pairwise representation vector matching. Fortunately, its 3D generalization, the octahedral field, paves both obstacles. Being 3D, the octahedral field naturally defines in euclidean space, where its smoothness can be measured in matching-free fashion, thanks to its Spherical Harmonics (SH) parameterized functional representation. Most prominently, smooth octahedral field in SH parameterization space inherits the same sharp feature alignment property as its 2D counterpart, making it an idea representation for implicit integration.
 
 > **TODO**: Add the section of math background
 
 ## Overview
-Given a set of uniformly sampled oriented pointcloud as input, we jointly learn implicit representation of both SDF and octahedral field using MLPs.
+Given a set of uniformly sampled oriented pointcloud, we leverage MLPs to learn implicit representation of both SDF and octahedral field jointly.
 
 $$
 \begin{aligned}
@@ -38,22 +38,20 @@ $$
 \end{aligned}
 $$
 
-For SDF MLP, we use [Siren](https://github.com/vsitzmann/siren) and follow [official implementation](https://github.com/vsitzmann/siren/blob/4df34baee3f0f9c8f351630992c1fe1f69114b5f/loss_functions.py#L214). The octahedral field, on the other hand, is supervised to match the orientation of pointcloud samples, while being locally as smooth as possible elsewhere. To enforce smoothness, instead of directly minimizing the gradient norm, we limit its Lipschitz bound with [LipMLP](https://nv-tlabs.github.io/lip-mlp/). It avoids costly evaluation of high order derivatives and improves the training speed by 50%. Please refers to the publication and code for more details.
+For SDF MLP, we use [Siren](https://github.com/vsitzmann/siren) and follow [official implementation](https://github.com/vsitzmann/siren/blob/4df34baee3f0f9c8f351630992c1fe1f69114b5f/loss_functions.py#L214). The octahedral field, on the other hand, is supervised to match the orientation of pointcloud samples, while elsewhere being locally as smooth as possible. To encourage smoothness, we regularize its Lipschitz bound using [LipMLP](https://nv-tlabs.github.io/lip-mlp/). Compared to costly minimization of the gradient norm, it accelerates training by 50%. Please refer to the publication and code for more details.
 
 > **TODO**: Add links after release
 
 ## Key results
 ### Direct cross field evaluation
-Our octahedral MLP encodes volume octahedral field implicitly, that when evaluated on surface using point query, gives similar flowlines as ones solved globally on the manifold
+When evaluated on surface using point query, our implicit octahedral field gives similar flowlines as ones solved globally on the manifold, saving the cross field design step of quadrilateral remeshing.
 
 <FlowlineGroup />
 
 > \* with $p=2, \epsilon=0$
 
-Thus, it can save the cross field design step of quadrilateral remeshing.
-
 ### Octahedral prior for surface regularization
-Upon smoothing, normal aligned octahedral frame converges either to $\pi / 2$ or $\pi$ at infinitesimal. Thus, by aligning it with the gradient of SDF, the octahedral symmetry naturally encourages sharper reconstruction.
+Upon smoothing, normal aligned octahedral frame converges to either $\pi / 2$ or $\pi$ at infinitesimal. Thus, aligning the SDF gradient with octahedral frame naturally encourages sharper reconstruction.
 
 <div style={{width: '400px', margin: "0 auto"}}>
     <div class="container">
@@ -70,20 +68,20 @@ Upon smoothing, normal aligned octahedral frame converges either to $\pi / 2$ or
     </div>
 </div>
 
-Here is a toy example to demonstrate the regularization
+Here is a toy example to demonstrate the idea
 
 <ToyViewer />
 
-The regularization shines the most for geometry of sharp features. In following example, we surpass baseline for a cleaner and sharper reconstruction, with only $1/4$ of input samples
+The regularization shines the most for geometry of sharp features. In following example, we surpass baseline with a cleaner and sharper reconstruction, with only $1/4$ of input samples
 
 <RegViewer />
 
-> **Note**: For rendering efficiency, I apply quadratic edge collapsing provided by [MeshLab](https://www.meshlab.net) to MC output. It reduce face count to around 20000 (or 60000 for ones with artifacts) while preserving the original look
+> **Note**: For rendering efficiency, I simplify MC output with quadratic edge collapsing (provided by [MeshLab](https://www.meshlab.net)). It reduce face count to around 20000 (or 60000 for ones with artifacts) while preserving the original look
 
 ### Neural inverse volume parameterization
-The octahedral field was originated to guide volume parameterization for hexahedral mesh generation. As hinted in [CubeCover](http://www.mi.fu-berlin.de/en/math/groups/ag-geom/publications/db/2011_Nieser-Reitebuch-Polthier_CubeCover.pdf), a hexahedral tessellation of 3D volume is a regular cube tessellation in parameterization space. Since our implicitly encode zero level set aligned octahedral frame, it might be possible to apply MC in parameterization space, such that the cut would be parallel to one of cube's faces, resulting in quad dominant mesh in original space.
+The octahedral field was originated to guide volume parameterization for hexahedral mesh generation. As hinted in [CubeCover](http://www.mi.fu-berlin.de/en/math/groups/ag-geom/publications/db/2011_Nieser-Reitebuch-Polthier_CubeCover.pdf), the hexahedral tessellation of 3D volume is equivalent to regular cube tessellation in its parameterization space. Since our encode zero level set aligned octahedral frame implicitly, it might be possible to apply MC in parameterization space, such that the cut would be parallel to one of cube's faces, resulting in quad dominant mesh in original space.
 
-Given cubes need to be cut with MC anyway, we are interested in volume parameterization without integer grid constraint, or namely continuous seamless parameterization.
+Note in this application, we are only interested in volume parameterization without integer grid constraint, or namely continuous seamless parameterization.
 
 $$
 \int_{V} \| \nabla f- X \|_F^2 \ d{V}
@@ -94,28 +92,28 @@ But before that, it is curial to exam the singularity graph first. We visualize 
 
 <SingularityViewer />
 
-Our implicit octahedral field gives reasonable singularity graph is ambient space, but some of them are intricate and potentially needs sanitization. However, even if we successfully cut the singularities and compute inversion-free parameterization, it is still challenging to sample a voxel of coordinates in parameterization space and wrap them back to $\mathbb{R}^3$ to query SDF.
+Our implicit octahedral field gives reasonable singularity graph is ambient space, but some of them are intricate and noisy that needs sanitization. However, even if we successfully cut the singularities and compute inversion-free parameterization, it is still challenging to sample a voxel of coordinates in parameterization space and wrap them back to $\mathbb{R}^3$ to query SDF.
 
-Thus, we decide to constrain the problem to singularity free case and tackle the parameterization inversely using a neural based approach
+Therefore, we take a step back by relaxing the problem to singularity free case and tackle the parameterization inversely using a neural field
 $$
 \int_{V_{param}} \| (\nabla f^{-1})^T - X \circ f^{-1} \|_F^2 \ d{V_{param}}
 $$
 where $f^{-1}: V_{param} \to V \in \mathbb{R}^3$
 
-Specifically, we model $f^{-1}$ as a vector potential. The matching vector potential gradient to the inverse of octahedral frame is roughly equivalent to matching the transpose of the gradient with original octahedral frame, assuming the gradient has been regularized to be orthogonal. So the gradient minimization can performed similarly using the SH parameterization.
+Specifically, we model $f^{-1}$ as a vector potential. The matching between vector potential gradient and the inverse of octahedral frame, is roughly equivalent to matching between the transpose of the gradient and the original octahedral frame, assuming the gradient has been regularized with orthogonality. Similar to octahedral field learning, the gradient minimization can performed using the SH parameterization.
 
-Here is an example for singularity-free octahedral field
+Here is an example for singularity-free parameterization for singularity-free octahedral field
 
 <InverseParamViewer name='cube_twist' />
 
-Here is an example for singularity free parameterization for an octahedral field that has singularities. The input samples are deliberately rotated so its sharp feature does not align with coordinate axis. The parameterization gives a rough tight oriented bound box, such that apply MC in parameterization space gives more clean and sharp edges. The difference is noticeable when the voxel resolution is low.
+Here is an example for singularity-free parameterization for an octahedral field with singularities. The input samples are deliberately rotated so its sharp edges mismatch the coordinate axis. The inverse parameterization roughly fits a tight oriented bound box, such that apply MC in parameterization space gives more clean and sharp edges. The difference is noticeable when the voxel resolution is low.
 
 <InverseParamViewer name='fandisk_rot' target={[0, 0.05, -0.1]} />
 
 The limited extraction quality is expected:
-1. We use three separated MLPs to model SDF, octahedral field and inverse parameterization function, that they are likely not fully match at zero level set.
-2. For samples far away from surface, the SH coefficients deviates from octahedral variety much that minimizing $l_2$ norm no long guarantees the correct rotation, leading to inaccurate parameterization. It is especially the case because we sample in parameterization space, that cannot assign larger weight to supervised samples as before.
-3. For general vector potential modeled by MLP, asking it to have orthogonal gradient is already difficult, not to mention the further constraints to match octahedral frame.
+1. We use three separated MLPs to model SDF, octahedral field and inverse parameterization function, that they may not fully align at zero level set.
+2. For samples far away from surface, the SH coefficients deviates significantly from the octahedral variety, such that minimizing $l_2$ norm no long guarantees the correct rotation, leading to inaccurate parameterization. It is especially the case because we sample in parameterization space that cannot assign larger weight to surface samples.
+3. For general vector potential modeled by MLP, constraining it to have orthogonal gradient is already difficult, not to mention further requirement to match octahedral frame.
 
 However, we believe it would be an interesting direction for future research.
 
