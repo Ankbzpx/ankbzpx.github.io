@@ -7,7 +7,7 @@ import Image from '@theme/IdealImage';
 
 # Badge Generation using Polygon Offset
 
-This is a mesh generation projection I have worked on in industry. The goal is straightforward: given a cover image, generate a badge like textured 3D model, with its edge customizable by artists.
+This is a mesh generation project that I have worked on in industry. The goal is straightforward: given a cover image, generate a badge-like textured 3D model, with its edge customizable by artists.
 
 <div class="container" >
   <div class="row">
@@ -24,7 +24,7 @@ This is a mesh generation projection I have worked on in industry. The goal is s
   <p style={{ textAlign: 'center' }}>Pipeline using my fan art of [Britz](https://forlittletail.fandom.com/wiki/Britz_Strudel) as cover image</p>
 </div>
 
-Under initial assessment, the edge can be customized with a curve editor, and the generation is a perfect use case for Blender [bevel modifier](https://en.wikibooks.org/wiki/Blender_3D:_Noob_to_Pro/Bevelling_a_Curve). However, the latter introduces self-intersection that are non-trivial to resolve--the only solution I found is to tetrahedralize everything then filter using [generalized winding number](https://igl.ethz.ch/projects/winding-number/), but my attempt failed due to the crash of [TetGen](https://wias-berlin.de/software/index.jsp?id=TetGen&lang=1).
+In the initial assessment, the edge can be customized with a curve editor, and the generation is a perfect use case for Blender [bevel modifier](https://en.wikibooks.org/wiki/Blender_3D:_Noob_to_Pro/Bevelling_a_Curve). However, the latter introduces self-intersections that are nontrivial to resolve--the only solution I found is to tetrahedralize everything and then filter using [generalized winding number](https://igl.ethz.ch/projects/winding-number/), but my early attempt failed due to the crash of [TetGen](https://wias-berlin.de/software/index.jsp?id=TetGen&lang=1).
 
 <div class="container" >
   <div class="row row--no-gutters">
@@ -49,9 +49,10 @@ Under initial assessment, the edge can be customized with a curve editor, and th
   </div>
 </div>
 
-After observing a sample model made by our 3D artist, I was immediately intrigued--it's quad, with boundary aligned edge loops beautifully propagating towards middle like ripples. He specifically emphasized the importance of those edge loops placement, so I decided to mimic it by polygon offset.
+After observing a sample model made by our 3D artist, I was immediately intrigued--it is mostly quad, with boundary aligned edge loops beautifully propagating towards middle like ripples. He specifically emphasized the importance of the placement of those edge loops, so I decided to mimic it by offsetting the boundary polygon.
 
-Start by extracting contours of cover image and cutting user specified edge curve into segments. The horizontal projection of each segments determines the offset distance.
+Start by extracting the contours of the cover image as a polygon and cutting the user-specified edge curve into segments. The horizontal projection of each segment determines the offset distance.
+
 <div class="container" >
   <div class="row row--no-gutters">
     <div class="col col--6">
@@ -65,7 +66,8 @@ Start by extracting contours of cover image and cutting user specified edge curv
   </div>
 </div>
 
-To offset the polygon, I implemented the [algorithm <cite> proposed by Chen et al.</cite>](https://mcmains.me.berkeley.edu/pubs/DAC05OffsetPolygon.pdf). First offset and connect each segments, then use winding number (using [GLU](https://www.glprogramming.com/red/chapter11.html)) to filter boundary polygon.
+To offset the polygon, I implemented the [algorithm <cite> proposed by Chen et al.</cite>](https://mcmains.me.berkeley.edu/pubs/DAC05OffsetPolygon.pdf). First offset and connect each polygon edge, then use winding number (implemented in [GLU](https://www.glprogramming.com/red/chapter11.html)) to filter boundary polygon.
+
 <div class="container" >
   <div class="row row--no-gutters">
     <div class="col col--6">
@@ -79,9 +81,9 @@ To offset the polygon, I implemented the [algorithm <cite> proposed by Chen et a
   </div>
 </div>
 
-The next step is to tessellate the gap between two polygons. Due to shrinkage (sometimes topology change), connecting closest vertices is prone to self intersection. The 2D tessellate methods, such as line sweeping, are also not applicable due to height difference. The feasible solution I found is the Delaunay triangulation.
+The next step is to tessellate the gap between two polygons. Due to shrinkage (sometimes topology change), connecting closest vertices is prone to self-intersection. The 2D tessellate methods, such as line sweeping, are also not applicable due to height difference. The feasible solution I found is the Delaunay triangulation.
 
-Since it produces a convex hull, I filtered out simplices that have barycenter outside the gap, as well as edges that intersects exterior / interior polygons. The recover of simplices is the problem of [finding all chordless cycles in undirected graph](https://stackoverflow.com/questions/4022662/find-all-chordless-cycles-in-an-undirected-graph), that can be solved using [wall-walking algorithm](https://stackoverflow.com/questions/838076/small-cycle-finding-in-a-planar-graph), by marking the directed edge traversal (boundary once, elsewhere twice).
+Since the triangulation produces a convex hull, I filtered out simplices with their barycenters outside the gap, as well as edges that intersect exterior / interior polygons. The recovery of simplices is the problem of [finding all chordless cycles in undirected graph](https://stackoverflow.com/questions/4022662/find-all-chordless-cycles-in-an-undirected-graph), which can be solved using [wall-walking algorithm](https://stackoverflow.com/questions/838076/small-cycle-finding-in-a-planar-graph), by marking the directed edge traversal (boundary once, elsewhere twice).
 
 <div class="container" >
   <div class="row row--no-gutters">
@@ -97,6 +99,7 @@ Since it produces a convex hull, I filtered out simplices that have barycenter o
 </div>
 
 As illustrated below, it is quite robust.
+
 <div class="container" >
   <div class="row row--no-gutters">
     <div class="col col--6">
@@ -116,6 +119,7 @@ As illustrated below, it is quite robust.
 </div>
 
 Though not occur in this cover image, it can handle topology change, as demonstrated in the toy example below.
+
 <div class="container" >
   <div class="row row--no-gutters">
     <div class="col col--6">
@@ -128,6 +132,6 @@ Though not occur in this cover image, it can handle topology change, as demonstr
   <p style={{ textAlign: 'center' }}>Handle topology change</p>
 </div>
 
-With polygons successfully tessellated, I use Blender to perform the rest (remove duplicated vertices, assign UV, texture)
+With polygons successfully tessellated, I use Blender to perform the rest (remove duplicated vertices, assign UV, texture).
 
 **Afterthoughts** Though the proposed method is robust, reasonably fast (around 3 seconds) and can produce meaningful edge loops, it regrettably gives triangle mesh that cannot completely fulfill the artists' needs. Nevertheless, it is the project that brought me in and captivated me in geometry processing.
