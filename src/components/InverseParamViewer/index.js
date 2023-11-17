@@ -48,7 +48,7 @@ export default function InverseParamViewer({ name, target }) {
                 <div class="col col--6">
                     <div style={{ height: "50vh" }}>
                         <Canvas camera={{ position: [-2, 1.5, -1], fov: 55 }}>
-                            <Environment preset='dawn' />
+                            <Environment files='/img/kiara_1_dawn_1k.hdr' />
                             <OrbitControls dampingFactor={0.1} target={target} />
                             <Model modelPath={`/mesh/inv_param/${name}_inv_param_mc.obj`} color='#FF9A2D' wireframeColor='#884700' wireframe={enableWireframe} />
                         </Canvas>
@@ -58,7 +58,7 @@ export default function InverseParamViewer({ name, target }) {
                 <div class="col col--6">
                     <div style={{ height: "50vh" }}>
                         <Canvas camera={{ position: [-2, 1.5, -1], fov: 55 }}>
-                            <Environment preset='dawn' />
+                            <Environment files='/img/kiara_1_dawn_1k.hdr' />
                             <OrbitControls dampingFactor={0.1} target={target} />
                             <Model modelPath={`/mesh/inv_param/${name}_mc.obj`} color='#2DC9FF' wireframeColor='#00526F' wireframe={enableWireframe} />
                         </Canvas>

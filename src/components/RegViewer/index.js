@@ -87,7 +87,7 @@ export default function RegViewer() {
             <div style={{ height: "50vh" }}>
                 <Canvas camera={{ position: [0, 0.75, 1.5], fov: 55 }}>
                     <OrbitControls dampingFactor={0.12} rotateSpeed={0.5} />
-                    <Environment preset='dawn' />
+                    <Environment files='/img/kiara_1_dawn_1k.hdr' />
                     {enableReg && <Model modelPath={`/mesh/reg/${numSamples}/fandisk_lip2_reg_mc.obj`} color='#7EDFE9' />}
                     {enableInput && <ModelLine modelPath={`/mesh/reg/${numSamples}/fandisk_lip2_reg_sup.obj`} color='#920000' />}
                     {enableRef && <Model modelPath={`/mesh/reg/fandisk_lip2_ref.obj`} color='#FFD43F' />}

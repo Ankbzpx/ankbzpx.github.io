@@ -206,7 +206,7 @@ export default function ParamViewer() {
                 <div class="col col--4">
                     <div style={{ height: "50vh" }}>
                         <Canvas camera={{ fov: 55 }}>
-                            <Environment preset='dawn' />
+                            <Environment files='/img/kiara_1_dawn_1k.hdr' />
                             <OrbitControls dampingFactor={0.1} target-y={1.2} />
                             <ModelPBR modelPath={`/mesh/param/params.obj`} color={showGrad ? '#696969': '#FFD43F'} opacity={showGrad ? 0.1 : 1.0} />
                             {showGrad && <Frame name='param_grad' enableX={enableX} enableY={enableY} enableZ={enableZ} />}

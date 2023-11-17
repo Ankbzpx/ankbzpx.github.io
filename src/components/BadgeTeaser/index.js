@@ -21,7 +21,7 @@ export default function BadgeTeaser() {
                 <Suspense fallback={null}>
                     <Model />
                     <OrbitControls dampingFactor={0.1} />
-                    <Environment preset="sunset" />
+                    <Environment files='/img/kiara_1_dawn_1k.hdr' />
                 </Suspense>
             </Canvas>
     )
