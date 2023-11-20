@@ -12,10 +12,10 @@ This is a mesh generation project that I have worked on in industry. The goal is
 <div class="container" >
   <div class="row">
     <div class="col col--4">
-      <img src="/img/polygon_offset/britz.png" />
+      <img src="/img/polygon_offset/britz.jpg" />
     </div>
     <div class="col col--4">
-      <img src="/img/polygon_offset/bezier.png" />
+      <img src="/img/polygon_offset/bezier.jpg" />
     </div>
     <div class="col col--4">
       <BadgeTeaser />
@@ -29,16 +29,16 @@ In the initial assessment, the edge can be customized with a curve editor, and t
 <div class="container" >
   <div class="row row--no-gutters">
     <div class="col col--6">
-      <Image img="/img/polygon_offset/blender_bevel_1.png"/>
+      <Image img="/img/polygon_offset/blender_bevel_1.jpg"/>
     </div>
     <div class="col col--6">
-      <Image img="/img/polygon_offset/polygon_offset_1.png"/>
+      <Image img="/img/polygon_offset/polygon_offset_1.jpg"/>
     </div>
     <div class="col col--6">
-      <Image img="/img/polygon_offset/blender_bevel_2.png"/>
+      <Image img="/img/polygon_offset/blender_bevel_2.jpg"/>
     </div>
     <div class="col col--6">
-      <Image img="/img/polygon_offset/polygon_offset_2.png"/>
+      <Image img="/img/polygon_offset/polygon_offset_2.jpg"/>
     </div>
     <div class="col col--6">
       <p style={{ textAlign: 'center' }}>Blender bevel</p>
@@ -56,11 +56,11 @@ Start by extracting the contours of the cover image as a polygon and cutting the
 <div class="container" >
   <div class="row row--no-gutters">
     <div class="col col--6">
-      <Image img="/img/polygon_offset/contour.png"/>
+      <Image img="/img/polygon_offset/contour.jpg"/>
       <p style={{ textAlign: 'center' }}>Contour extraction</p>
     </div>
     <div class="col col--6">
-      <Image img="/img/polygon_offset/bezier_split.png"/>
+      <Image img="/img/polygon_offset/bezier_split.jpg"/>
       <p style={{ textAlign: 'center' }}>Curve segment</p>
     </div>
   </div>
@@ -71,11 +71,11 @@ To offset the polygon, I implemented the [algorithm <cite> proposed by Chen et a
 <div class="container" >
   <div class="row row--no-gutters">
     <div class="col col--6">
-      <Image img="/img/polygon_offset/offset_raw.png"/>
+      <Image img="/img/polygon_offset/offset_raw.jpg"/>
       <p style={{ textAlign: 'center' }}>Polygon offset</p>
     </div>
     <div class="col col--6">
-      <Image img="/img/polygon_offset/offset_filter.png"/>
+      <Image img="/img/polygon_offset/offset_filter.jpg"/>
       <p style={{ textAlign: 'center' }}>Offset cleanup</p>
     </div>
   </div>
@@ -88,11 +88,11 @@ Since the triangulation produces a convex hull, I filtered out simplices with th
 <div class="container" >
   <div class="row row--no-gutters">
     <div class="col col--6">
-      <Image img="/img/polygon_offset/delaunay_raw.png"/>
+      <Image img="/img/polygon_offset/delaunay_raw.jpg"/>
       <p style={{ textAlign: 'center' }}>Delaunay triangulation</p>
     </div>
     <div class="col col--6">
-      <Image img="/img/polygon_offset/delaunay_filter.png"/>
+      <Image img="/img/polygon_offset/delaunay_filter.jpg"/>
       <p style={{ textAlign: 'center' }}>Triangulation cleanup</p>
     </div>
   </div>
@@ -103,16 +103,16 @@ As illustrated below, it is quite robust.
 <div class="container" >
   <div class="row row--no-gutters">
     <div class="col col--6">
-      <Image img="/img/polygon_offset/delaunay_sample_1.png"/>
+      <Image img="/img/polygon_offset/delaunay_sample_1.jpg"/>
     </div>
     <div class="col col--6">
-      <Image img="/img/polygon_offset/delaunay_sample_2.png"/>
+      <Image img="/img/polygon_offset/delaunay_sample_2.jpg"/>
     </div>
     <div class="col col--6">
-      <Image img="/img/polygon_offset/delaunay_sample_3.png"/>
+      <Image img="/img/polygon_offset/delaunay_sample_3.jpg"/>
     </div>
     <div class="col col--6">
-      <Image img="/img/polygon_offset/delaunay_all.png"/>
+      <Image img="/img/polygon_offset/delaunay_all.jpg"/>
     </div>
   </div>
   <p style={{ textAlign: 'center' }}>Side triangulations. The bottom right being the concatenation of all segments</p>
@@ -123,10 +123,10 @@ Though not occur in this cover image, it can handle topology change, as demonstr
 <div class="container" >
   <div class="row row--no-gutters">
     <div class="col col--6">
-      <Image img="/img/polygon_offset/topology_offset.png"/>
+      <Image img="/img/polygon_offset/topology_offset.jpg"/>
     </div>
     <div class="col col--6">
-      <Image img="/img/polygon_offset/topology_delaunay.png"/>
+      <Image img="/img/polygon_offset/topology_delaunay.jpg"/>
     </div>
   </div>
   <p style={{ textAlign: 'center' }}>Handle topology change</p>
