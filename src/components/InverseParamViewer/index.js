@@ -39,11 +39,11 @@ function Model({ modelPath, color, wireframeColor, wireframe }) {
 }
 
 export default function InverseParamViewer({ name, target }) {
-    const [enableWireframe, setEnableWireframe] = React.useState(false);
+    const [enableWireframe, setEnableWireframe] = React.useState(true);
 
     return (
         <div>
-            <FormControlLabel control={<Checkbox value={enableWireframe} onChange={() => { setEnableWireframe(!enableWireframe) }} />} label="Enable wireframe" />
+            <FormControlLabel control={<Checkbox defaultChecked value={enableWireframe} onChange={() => { setEnableWireframe(!enableWireframe) }} />} label="Enable wireframe" />
             <div class="row">
                 <div class="col col--6">
                     <div style={{ height: "50vh" }}>
