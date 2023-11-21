@@ -36,15 +36,9 @@ making it the perfect candidate for implicit integration
 ## Overview
 Given a uniformly sampled oriented point cloud, we leverage MLPs to jointly fit the implicit SDF and the octahedral field.
 
-$$
-\begin{aligned}
-\text{MLP}_{\text{sdf}}: & \ \mathbb{R}^3 \to \mathbb{R} \\
-\text{MLP}_{\text{oct}}: & \ \mathbb{R}^3 \to \mathbb{R}^9
-\end{aligned}
-$$
+<img src='/img/pipeline.png' />
 
-To fit SDF, we use [Siren](https://github.com/vsitzmann/siren) and follow its [common practice](https://github.co
-m/vsitzmann/siren/blob/4df34baee3f0f9c8f351630992c1fe1f69114b5f/loss_functions.py#L214). The octahedral field, on the other hand, is supervised to match the orientation of point samples, while elsewhere regularized to be locally as smooth as possible. To encourage smoothness, instead of minimizing gradient norm, we directly leverages [LipMLP](https://nv-tlabs.github.io/lip-mlp/), that speeds up training by 50%. Please refer to the publication and the code release for more details.
+To fit SDF, we use [Siren](https://github.com/vsitzmann/siren) and follow its [common practice](https://github.com/vsitzmann/siren/blob/4df34baee3f0f9c8f351630992c1fe1f69114b5f/loss_functions.py#L214). The octahedral field, on the other hand, is supervised to match the orientation of point samples, while elsewhere regularized to be locally as smooth as possible. To encourage smoothness, instead of minimizing gradient norm, we directly leverages [LipMLP](https://nv-tlabs.github.io/lip-mlp/), that speeds up training by 50%. Please refer to the publication and the code release for more details.
 
 > **TODO**: Add links after release
 
@@ -57,7 +51,10 @@ When evaluated on the extracted surface, our implicit octahedral field gives flo
 > \* with $p=2, \epsilon=0$
 
 ### Octahedral prior for surface regularization
-Moreover, in-between supervised samples, the normal aligned octahedral frame converges to either $\pi / 2$ or $\pi$ at infinitesimal, introducing additional sharp features prior for SDF.
+
+<img src='/img/reg_compare.png' />
+
+Moreover, the normal aligned octahedral frame in-between supervised samples converges to either $\pi / 2$ or $\pi$ at infinitesimal, introducing sharp features prior to SDF.
 
 <div style={{width: '400px', margin: "0 auto"}}>
     <div class="container">
@@ -78,7 +75,7 @@ Specifically, we regularize the gradient of SDF to match any one axis of the oct
 
 <ToyViewer />
 
-The regularization shines the most for geometry of sharp features. In the following example, we surpass the baseline with a cleaner and sharper reconstruction, only using $1/4$ of the input samples.
+The regularization shines the most for geometry with sharp features. In the following example, we surpass the baseline with a cleaner and sharper reconstruction, only using $1/4$ of the input samples.
 
 <RegViewer />
 
