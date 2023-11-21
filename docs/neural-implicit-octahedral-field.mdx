@@ -104,11 +104,11 @@ Specifically, we model the inverse parameterization function $f^{-1}$ as a vecto
 
 Here is an example of singularity-free parameterization for a singularity-free octahedral field.
 
-<InverseParamViewer name='cube_twist' />
+<InverseParamViewer name='cube_twist' position={[-2, 1.5, -1]} />
 
 Here is an example of singularity-free parameterization for an octahedral field with singularities. The input samples are deliberately rotated so that their sharp edges mismatch the coordinate axis. The inverse parameterization roughly fits a tight-oriented bounding box, such that applying MC in parameterization space gives more clean and sharper edges. The difference is noticeable when the voxel resolution is low.
 
-<InverseParamViewer name='fandisk_rot' target={[0, 0.05, -0.1]} />
+<InverseParamViewer name='fandisk_rot' position={[-1.25, 0.9375, -0.625]} target={[0, 0.05, -0.1]} />
 
 The extraction quality is limited but also expected:
 1. We use three separated MLPs to model the SDF, octahedral field, and inverse parameterization function, that align them precisely at zero level set is challenging.

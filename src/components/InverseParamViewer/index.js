@@ -38,7 +38,7 @@ function Model({ modelPath, color, wireframeColor, wireframe }) {
     return <primitive ref={modelRef} object={copiedModel} />;
 }
 
-export default function InverseParamViewer({ name, target }) {
+export default function InverseParamViewer({ name, target, position }) {
     const [enableWireframe, setEnableWireframe] = React.useState(true);
 
     return (
@@ -47,7 +47,7 @@ export default function InverseParamViewer({ name, target }) {
             <div class="row">
                 <div class="col col--6">
                     <div style={{ height: "50vh" }}>
-                        <Canvas camera={{ position: [-2, 1.5, -1], fov: 55 }}>
+                        <Canvas camera={{ position: position, fov: 55 }}>
                             <Environment files='/img/kiara_1_dawn_1k.hdr' />
                             <OrbitControls dampingFactor={0.1} target={target} />
                             <Model modelPath={`/mesh/inv_param/${name}_inv_param_mc.obj`} color='#FF9A2D' wireframeColor='#884700' wireframe={enableWireframe} />
@@ -57,7 +57,7 @@ export default function InverseParamViewer({ name, target }) {
                 </div>
                 <div class="col col--6">
                     <div style={{ height: "50vh" }}>
-                        <Canvas camera={{ position: [-2, 1.5, -1], fov: 55 }}>
+                        <Canvas camera={{ position: position, fov: 55 }}>
                             <Environment files='/img/kiara_1_dawn_1k.hdr' />
                             <OrbitControls dampingFactor={0.1} target={target} />
                             <Model modelPath={`/mesh/inv_param/${name}_mc.obj`} color='#2DC9FF' wireframeColor='#00526F' wireframe={enableWireframe} />
