@@ -1,6 +1,6 @@
 import { Canvas, useLoader } from '@react-three/fiber'
 import React, { useMemo } from 'react'
-import { OrbitControls, Environment } from '@react-three/drei'
+import { OrbitControls } from '@react-three/drei'
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import SaveFigure from "@site/src/components/SaveFigure";
 

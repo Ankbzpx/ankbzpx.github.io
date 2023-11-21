@@ -1,5 +1,5 @@
-import { Canvas, useLoader, useThree, useFrame } from '@react-three/fiber'
-import React, { useEffect, useMemo, useRef } from 'react'
+import { Canvas, useLoader } from '@react-three/fiber'
+import React, { useMemo, useRef } from 'react'
 import { OrbitControls, Environment } from '@react-three/drei'
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { Color, MeshBasicMaterial, MeshPhysicalMaterial, DoubleSide, WireframeGeometry, LineBasicMaterial, LineSegments, Vector3, BufferGeometry } from 'three';
@@ -144,7 +144,7 @@ export default function ParamViewer() {
 
   return (
     <div>
-      <FormControlLabel control={<Checkbox value={showSave} onChange={() => { setShowSave(!showSave) }} />} label="Show save" />
+      {/* <FormControlLabel control={<Checkbox value={showSave} onChange={() => { setShowSave(!showSave) }} />} label="Show save" /> */}
       <div class="row">
         <div class="col col--4">
           <div style={{ height: showSave ? "80vh" : "50vh" }}>

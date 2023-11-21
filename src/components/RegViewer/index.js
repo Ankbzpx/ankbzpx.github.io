@@ -1,8 +1,8 @@
 import { Canvas, useLoader } from '@react-three/fiber'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import { OrbitControls, Environment } from '@react-three/drei'
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
-import { Color, DoubleSide, MeshBasicMaterial, MeshPhysicalMaterial } from 'three';
+import { Color, MeshBasicMaterial, MeshPhysicalMaterial } from 'three';
 
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -89,7 +89,7 @@ export default function RegViewer() {
             color: noRegColor,
           },
         }} />} label="[Output] Surface reconstructed without regularization (10000 samples)" />
-        <FormControlLabel control={<Checkbox value={showSave} onChange={() => { setShowSave(!showSave) }} />} label="Show save" />
+        {/* <FormControlLabel control={<Checkbox value={showSave} onChange={() => { setShowSave(!showSave) }} />} label="Show save" /> */}
       </FormGroup>
       <div style={{ height: showSave ? "80vh" : "50vh" }}>
         <Canvas camera={{ position: [0, 0.75, 1.5], fov: 55 }}>

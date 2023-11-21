@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Select from '@mui/material/Select';
 import FlowlineViewer from "@site/src/components/FlowlineViewer";
 import InputLabel from '@mui/material/InputLabel';
@@ -28,7 +28,7 @@ export default function FlowlineGroup() {
           <MenuItem value={'join'}>Join</MenuItem>
           <MenuItem value={'rocker_arm'}>RockerArm</MenuItem>
         </Select>
-        <FormControlLabel control={<Checkbox value={showSave} onChange={() => { setShowSave(!showSave) }} />} label="Show save" />
+        {/* <FormControlLabel control={<Checkbox value={showSave} onChange={() => { setShowSave(!showSave) }} />} label="Show save" /> */}
       </FormControl>
 
       <div class="row">

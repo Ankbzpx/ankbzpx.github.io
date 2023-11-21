@@ -1,5 +1,5 @@
 import { Canvas, useLoader } from '@react-three/fiber'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import { OrbitControls } from '@react-three/drei'
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { Color, DoubleSide, MeshStandardMaterial } from 'three';
@@ -84,7 +84,7 @@ export default function ToyViewer() {
             color: noRegColor,
           },
         }} />} label="[Output] Surface reconstructed without regularization" />
-        <FormControlLabel control={<Checkbox value={showSave} onChange={() => { setShowSave(!showSave) }} />} label="Show save" />
+        {/* <FormControlLabel control={<Checkbox value={showSave} onChange={() => { setShowSave(!showSave) }} />} label="Show save" /> */}
       </FormGroup>
       <div style={{ height: showSave ? "80vh" : "50vh" }}>
         <Canvas camera={{ position: [0, 0.5, 2], fov: 55 }}>

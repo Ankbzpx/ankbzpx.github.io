@@ -1,9 +1,7 @@
-import React, { useState, Suspense } from 'react';
-import { useLoader, Canvas, Html } from "@react-three/fiber";
-import { Environment, OrbitControls, useProgress } from "@react-three/drei";
+import React, { Suspense } from 'react';
+import { useLoader, Canvas } from "@react-three/fiber";
+import { Environment, OrbitControls } from "@react-three/drei";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import Image from '@theme/IdealImage';
-import styles from './styles.module.css';
 
 const Model = () => {
   const gltf = useLoader(GLTFLoader, "/mesh/badge/badge.glb");

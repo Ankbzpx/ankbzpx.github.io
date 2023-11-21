@@ -1,8 +1,8 @@
-import { Canvas, useLoader, useThree } from '@react-three/fiber'
+import { Canvas, useLoader } from '@react-three/fiber'
 import React, { useEffect, useMemo, useRef } from 'react'
-import { OrbitControls, Environment, Html } from '@react-three/drei'
+import { OrbitControls, Environment } from '@react-three/drei'
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
-import { Color, MeshPhysicalMaterial, BufferAttribute, LineBasicMaterial, WireframeGeometry, LineSegments } from 'three';
+import { Color, MeshPhysicalMaterial, LineBasicMaterial, WireframeGeometry, LineSegments } from 'three';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import SaveFigure from "@site/src/components/SaveFigure";
@@ -46,7 +46,7 @@ export default function InverseParamViewer({ name, target, position }) {
   return (
     <div>
       <FormControlLabel control={<Checkbox defaultChecked value={enableWireframe} onChange={() => { setEnableWireframe(!enableWireframe) }} />} label="Enable wireframe" />
-      <FormControlLabel control={<Checkbox value={showSave} onChange={() => { setShowSave(!showSave) }} />} label="Show save" />
+      {/* <FormControlLabel control={<Checkbox value={showSave} onChange={() => { setShowSave(!showSave) }} />} label="Show save" /> */}
       <div class="row">
         <div class="col col--6">
           <div style={{ height: showSave ? "80vh" : "50vh" }}>

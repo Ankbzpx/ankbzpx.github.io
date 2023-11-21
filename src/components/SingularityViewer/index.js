@@ -64,7 +64,7 @@ export default function SingularityViewer() {
           <MenuItem value={'join'}>Join</MenuItem>
           <MenuItem value={'rocker_arm'}>RockerArm</MenuItem>
         </Select>
-        <FormControlLabel control={<Checkbox value={showSave} onChange={() => { setShowSave(!showSave) }} />} label="Show save" />
+        {/* <FormControlLabel control={<Checkbox value={showSave} onChange={() => { setShowSave(!showSave) }} />} label="Show save" /> */}
       </FormControl>
       <div style={{ height: showSave ? "80vh" : "35vh" }}>
         <Canvas camera={{ position: [0, 1.5, 3], fov: 55 }}>
