@@ -82,6 +82,9 @@ The regularization shines the most for geometry with sharp features. In the foll
 > **Note**: For rendering efficiency, all MC output were simplified with quadratic edge collapsing provided by [MeshLab](https://www.meshlab.net) to around 20000 faces (or 60000 for ones with multilayer artifacts).
 
 ### Neural inverse volume parameterization
+
+<img src='/img/param.png' />
+
 The octahedral field originated in guiding the volume parameterization for the hexahedral mesh generation. As hinted in [CubeCover](http://www.mi.fu-berlin.de/en/math/groups/ag-geom/publications/db/2011_Nieser-Reitebuch-Polthier_CubeCover.pdf), the hexahedral tessellation of the 3D volume is equivalent to a regular cube tessellation in its parameterization space. Given we fit the implicit octahedral field to align with the zero level set, applying MC in the volume parameterization space should cut the cubes in parallel along their faces, resulting in quad dominant mesh in original space.
 
 In this case, we are interested in CubeCover without integer grid constrains, or namely, the continuous seamless parameterization.
