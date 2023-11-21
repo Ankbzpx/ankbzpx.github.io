@@ -11,6 +11,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
+import SaveFigure from "@site/src/components/SaveFigure";
 
 
 function Model({ modelPath, color }) {
@@ -32,6 +33,7 @@ export default function ToyViewer() {
   const [enableOct, setEnableOct] = React.useState(true);
   const [enableReg, setEnableReg] = React.useState(true);
   const [enableNoReg, setEnableNoReg] = React.useState(true);
+  const [showSave, setShowSave] = React.useState(false);
 
   return (
     <div >
@@ -77,20 +79,22 @@ export default function ToyViewer() {
             color: '#B293E4',
           },
         }} />} label="Surface no regularization" />
+        <FormControlLabel control={<Checkbox value={showSave} onChange={() => { setShowSave(!showSave) }} />} label="Show save" />
       </FormGroup>
       <div style={{ height: "50vh" }}>
         <Canvas camera={{ position: [0, 0.5, 2], fov: 55 }}>
-          <OrbitControls dampingFactor={0.12} rotateSpeed={0.5}/>
+          <OrbitControls dampingFactor={0.12} rotateSpeed={0.5} />
           <ambientLight intensity={Math.PI / 2} />
           <pointLight position={[10, 10, 10]} decay={0} intensity={Math.PI} />
           {enableInput && <Model modelPath={`/mesh/toy/oct_supervise/crease_4_${creaseAngle}_sup.obj`} color='#FF6262' />}
           {enableOct && <Model modelPath={`/mesh/toy/oct_interp/crease_4_${creaseAngle}_interp.obj`} color='#FFC732' />}
           {enableReg && <Model modelPath={`/mesh/toy/reg/crease_4_${creaseAngle}_mc.obj`} color='#BFE1FF' />}
           {enableNoReg && <Model modelPath={`/mesh/toy/no_reg/crease_4_${creaseAngle}_mc.obj`} color='#B293E4' />}
+          {showSave && <SaveFigure name={`toy_${creaseAngle}`} />}
         </Canvas>
-        <br/>
+        <br />
       </div>
-      <br/><br/>
+      <br /><br />
     </div>
   );
 }
