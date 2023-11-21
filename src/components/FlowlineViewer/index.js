@@ -17,7 +17,7 @@ export default function FlowlineViewer({ flowlinePath, showSave }) {
   const name = path_split[path_split.length - 1].split('.')[0]
 
   return (
-    <div style={{ height: "35vh" }}>
+    <div style={{ height: showSave ? "80vh" : "35vh" }}>
       <Canvas camera={{ position: [0, 1.5, 3], fov: 55 }}>
         <ambientLight intensity={Math.PI} />
         <OrbitControls dampingFactor={0.1} />

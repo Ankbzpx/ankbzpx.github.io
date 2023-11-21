@@ -86,7 +86,7 @@ export default function ToyViewer() {
         }} />} label="[Output] Surface reconstructed without regularization" />
         <FormControlLabel control={<Checkbox value={showSave} onChange={() => { setShowSave(!showSave) }} />} label="Show save" />
       </FormGroup>
-      <div style={{ height: "50vh" }}>
+      <div style={{ height: showSave ? "80vh" : "50vh" }}>
         <Canvas camera={{ position: [0, 0.5, 2], fov: 55 }}>
           <OrbitControls dampingFactor={0.12} rotateSpeed={0.5} />
           <ambientLight intensity={Math.PI / 2} />

@@ -147,7 +147,7 @@ export default function ParamViewer() {
       <FormControlLabel control={<Checkbox value={showSave} onChange={() => { setShowSave(!showSave) }} />} label="Show save" />
       <div class="row">
         <div class="col col--4">
-          <div style={{ height: "50vh" }}>
+          <div style={{ height: showSave ? "80vh" : "50vh" }}>
             <Canvas camera={{ position: [0, 1.5, 3], fov: 55 }}>
               <ambientLight intensity={Math.PI / 2} />
               <OrbitControls dampingFactor={0.1} />
@@ -185,7 +185,7 @@ export default function ParamViewer() {
 
         </div>
         <div class="col col--4">
-          <div style={{ height: "50vh" }}>
+          <div style={{ height: showSave ? "80vh" : "50vh" }}>
             <Canvas camera={{ position: [0, 1.5, 3], fov: 55 }}>
               <ambientLight intensity={Math.PI / 2} />
               <OrbitControls dampingFactor={0.1} />
@@ -208,7 +208,7 @@ export default function ParamViewer() {
           <FormControlLabel control={<Switch defaultChecked value={cutFix} onChange={() => { setCutFix(!cutFix) }} />} label="Cut fix" />
         </div>
         <div class="col col--4">
-          <div style={{ height: "50vh" }}>
+          <div style={{ height: showSave ? "80vh" : "50vh" }}>
             <Canvas camera={{ fov: 55 }}>
               <Environment files='/img/kiara_1_dawn_1k.hdr' />
               <OrbitControls dampingFactor={0.1} target-y={1.2} />

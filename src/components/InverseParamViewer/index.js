@@ -49,7 +49,7 @@ export default function InverseParamViewer({ name, target, position }) {
       <FormControlLabel control={<Checkbox value={showSave} onChange={() => { setShowSave(!showSave) }} />} label="Show save" />
       <div class="row">
         <div class="col col--6">
-          <div style={{ height: "50vh" }}>
+          <div style={{ height: showSave ? "80vh" : "50vh" }}>
             <Canvas camera={{ position: position, fov: 55 }}>
               <Environment files='/img/kiara_1_dawn_1k.hdr' />
               <OrbitControls dampingFactor={0.1} target={target} />
@@ -60,7 +60,7 @@ export default function InverseParamViewer({ name, target, position }) {
           </div>
         </div>
         <div class="col col--6">
-          <div style={{ height: "50vh" }}>
+          <div style={{ height: showSave ? "80vh" : "50vh" }}>
             <Canvas camera={{ position: position, fov: 55 }}>
               <Environment files='/img/kiara_1_dawn_1k.hdr' />
               <OrbitControls dampingFactor={0.1} target={target} />

@@ -66,7 +66,7 @@ export default function SingularityViewer() {
         </Select>
         <FormControlLabel control={<Checkbox value={showSave} onChange={() => { setShowSave(!showSave) }} />} label="Show save" />
       </FormControl>
-      <div style={{ height: "35vh" }}>
+      <div style={{ height: showSave ? "80vh" : "35vh" }}>
         <Canvas camera={{ position: [0, 1.5, 3], fov: 55 }}>
           <ambientLight intensity={Math.PI / 2} />
           <OrbitControls dampingFactor={0.1} />
