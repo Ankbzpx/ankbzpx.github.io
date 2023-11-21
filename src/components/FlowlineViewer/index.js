@@ -15,7 +15,7 @@ export default function FlowlineViewer({ flowlinePath }) {
   return (
     <div style={{ height: "35vh" }}>
       <Canvas camera={{ position: [0, 1.5, 3], fov: 55 }}>
-        <ambientLight intensity={Math.PI / 2} />
+        <ambientLight intensity={Math.PI} />
         <OrbitControls dampingFactor={0.1}/>
         <Flowline modelPath={flowlinePath} />
       </Canvas>
