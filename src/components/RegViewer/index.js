@@ -49,6 +49,10 @@ export default function RegViewer() {
   const [enableInput, setEnableInput] = React.useState(true);
   const [showSave, setShowSave] = React.useState(false);
 
+  const inputColor = '#920000'
+  const regColor = '#7EDFE9'
+  const noRegColor = '#FFD43F'
+
   return (
     <div>
       <FormControl sx={{ m: 1, minWidth: 150 }}>
@@ -67,33 +71,33 @@ export default function RegViewer() {
         </Select>
       </FormControl>
       <FormGroup>
-        <FormControlLabel control={<Checkbox defaultChecked value={enableReg} onChange={() => { setEnableReg(!enableReg) }} sx={{
-          color: '#7EDFE9',
-          '&.Mui-checked': {
-            color: '#7EDFE9',
-          },
-        }} />} label="Surface with regularization" />
-        <FormControlLabel control={<Checkbox value={enableRef} onChange={() => { setEnableRef(!enableRef) }} sx={{
-          color: '#FFD43F',
-          '&.Mui-checked': {
-            color: '#FFD43F',
-          },
-        }} />} label="Reference surface without regularization (10000 samples)" />
         <FormControlLabel control={<Checkbox defaultChecked value={enableInput} onChange={() => { setEnableInput(!enableInput) }} sx={{
-          color: '#920000',
+          color: inputColor,
           '&.Mui-checked': {
-            color: '#920000',
+            color: inputColor,
           },
-        }} />} label="Input oriented pointcloud (10000 one matches reference)" />
+        }} />} label={`[Input] Oriented pointcloud of size ${numSamples}`} />
+        <FormControlLabel control={<Checkbox defaultChecked value={enableReg} onChange={() => { setEnableReg(!enableReg) }} sx={{
+          color: regColor,
+          '&.Mui-checked': {
+            color: regColor,
+          },
+        }} />} label={`[Output] Surface reconstructed with regularization (${numSamples} samples)`} />
+        <FormControlLabel control={<Checkbox value={enableRef} onChange={() => { setEnableRef(!enableRef) }} sx={{
+          color: noRegColor,
+          '&.Mui-checked': {
+            color: noRegColor,
+          },
+        }} />} label="[Output] Surface reconstructed without regularization (10000 samples)" />
         <FormControlLabel control={<Checkbox value={showSave} onChange={() => { setShowSave(!showSave) }} />} label="Show save" />
       </FormGroup>
       <div style={{ height: "50vh" }}>
         <Canvas camera={{ position: [0, 0.75, 1.5], fov: 55 }}>
           <OrbitControls dampingFactor={0.12} rotateSpeed={0.5} />
           <Environment files='/img/kiara_1_dawn_1k.hdr' />
-          {enableReg && <Model modelPath={`/mesh/reg/${numSamples}/fandisk_lip2_reg_mc.obj`} color='#7EDFE9' />}
-          {enableInput && <ModelLine modelPath={`/mesh/reg/${numSamples}/fandisk_lip2_reg_sup.obj`} color='#920000' />}
-          {enableRef && <Model modelPath={`/mesh/reg/fandisk_lip2_ref.obj`} color='#FFD43F' />}
+          {enableReg && <Model modelPath={`/mesh/reg/${numSamples}/fandisk_lip2_reg_mc.obj`} color={regColor} />}
+          {enableInput && <ModelLine modelPath={`/mesh/reg/${numSamples}/fandisk_lip2_reg_sup.obj`} color={inputColor} />}
+          {enableRef && <Model modelPath={`/mesh/reg/fandisk_lip2_ref.obj`} color={noRegColor} />}
           {showSave && <SaveFigure name={`regularize_${numSamples}`} />}
         </Canvas>
       </div>

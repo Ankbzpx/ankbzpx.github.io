@@ -35,6 +35,11 @@ export default function ToyViewer() {
   const [enableNoReg, setEnableNoReg] = React.useState(true);
   const [showSave, setShowSave] = React.useState(false);
 
+  const inputColor = '#FF6262'
+  const octColor = '#FFC732'
+  const regColor = '#BFE1FF'
+  const noRegColor = '#B293E4'
+
   return (
     <div >
       <FormControl sx={{ m: 1, minWidth: 120 }}>
@@ -56,29 +61,29 @@ export default function ToyViewer() {
         <FormControlLabel control={<Checkbox defaultChecked value={enableInput} onChange={() => {
           setEnableInput(!enableInput)
         }} sx={{
-          color: '#FF6262',
+          color: inputColor,
           '&.Mui-checked': {
-            color: '#FF6262',
+            color: inputColor,
           },
-        }} />} label="Input oriented point cloud" />
+        }} />} label="[Input] Oriented point cloud" />
         <FormControlLabel control={<Checkbox defaultChecked value={enableOct} onChange={() => { setEnableOct(!enableOct) }} sx={{
-          color: '#FFC732',
+          color: octColor,
           '&.Mui-checked': {
-            color: '#FFC732',
+            color: octColor,
           },
-        }} />} label="Octahedral field" />
+        }} />} label="[Output] Octahedral field" />
         <FormControlLabel control={<Checkbox defaultChecked value={enableReg} onChange={() => { setEnableReg(!enableReg) }} sx={{
-          color: '#BFE1FF',
+          color: regColor,
           '&.Mui-checked': {
-            color: '#BFE1FF',
+            color: regColor,
           },
-        }} />} label="Surface with regularization" />
+        }} />} label="[Output] Surface reconstructed with regularization" />
         <FormControlLabel control={<Checkbox defaultChecked value={enableNoReg} onChange={() => { setEnableNoReg(!enableNoReg) }} sx={{
-          color: '#B293E4',
+          color: noRegColor,
           '&.Mui-checked': {
-            color: '#B293E4',
+            color: noRegColor,
           },
-        }} />} label="Surface no regularization" />
+        }} />} label="[Output] Surface reconstructed without regularization" />
         <FormControlLabel control={<Checkbox value={showSave} onChange={() => { setShowSave(!showSave) }} />} label="Show save" />
       </FormGroup>
       <div style={{ height: "50vh" }}>
@@ -86,10 +91,10 @@ export default function ToyViewer() {
           <OrbitControls dampingFactor={0.12} rotateSpeed={0.5} />
           <ambientLight intensity={Math.PI / 2} />
           <pointLight position={[10, 10, 10]} decay={0} intensity={Math.PI} />
-          {enableInput && <Model modelPath={`/mesh/toy/oct_supervise/crease_4_${creaseAngle}_sup.obj`} color='#FF6262' />}
-          {enableOct && <Model modelPath={`/mesh/toy/oct_interp/crease_4_${creaseAngle}_interp.obj`} color='#FFC732' />}
-          {enableReg && <Model modelPath={`/mesh/toy/reg/crease_4_${creaseAngle}_mc.obj`} color='#BFE1FF' />}
-          {enableNoReg && <Model modelPath={`/mesh/toy/no_reg/crease_4_${creaseAngle}_mc.obj`} color='#B293E4' />}
+          {enableInput && <Model modelPath={`/mesh/toy/oct_supervise/crease_4_${creaseAngle}_sup.obj`} color={inputColor} />}
+          {enableOct && <Model modelPath={`/mesh/toy/oct_interp/crease_4_${creaseAngle}_interp.obj`} color={octColor} />}
+          {enableReg && <Model modelPath={`/mesh/toy/reg/crease_4_${creaseAngle}_mc.obj`} color={regColor} />}
+          {enableNoReg && <Model modelPath={`/mesh/toy/no_reg/crease_4_${creaseAngle}_mc.obj`} color={noRegColor} />}
           {showSave && <SaveFigure name={`toy_${creaseAngle}`} />}
         </Canvas>
         <br />
