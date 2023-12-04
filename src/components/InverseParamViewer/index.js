@@ -100,7 +100,7 @@ export default function InverseParamViewer({ name, target, position }) {
               }
               {showSave && <SaveFigure name={`${name}_param`} />}
             </Canvas>
-            <p style={{ textAlign: 'center' }}>MC in parameterization space</p>
+            <p style={{ textAlign: 'center' }}>Extraction in parameterization space</p>
           </div>
         </div>
         <div class="col col--6">
@@ -118,7 +118,7 @@ export default function InverseParamViewer({ name, target, position }) {
               }
               {showSave && <SaveFigure name={`${name}_original`} />}
             </Canvas>
-            <p style={{ textAlign: 'center' }} >MC in original space</p>
+            <p style={{ textAlign: 'center' }} >Extraction in original space</p>
           </div>
         </div>
       </div>
